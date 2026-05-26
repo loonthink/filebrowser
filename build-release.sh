@@ -32,10 +32,19 @@ build_target() {
 
 echo "==> Checking tools"
 command -v go >/dev/null 2>&1 || { echo "go is required"; exit 1; }
+command -v node >/dev/null 2>&1 || { echo "node is required"; exit 1; }
+command -v pnpm >/dev/null 2>&1 || { echo "pnpm is required"; exit 1; }
 
 echo "==> Cleaning output"
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
+
+echo "==> Building frontend"
+(
+  cd frontend
+  CI=true pnpm install --frozen-lockfile
+  pnpm run build
+)
 
 echo "==> Building backend executables"
 build_target "$HOST_GOOS" "$HOST_GOARCH"

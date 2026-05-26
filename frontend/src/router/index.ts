@@ -1,6 +1,7 @@
 import type { RouteLocation } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "@/views/Login.vue";
+import AutoLogin from "@/views/AutoLogin.vue";
 import Layout from "@/views/Layout.vue";
 import Files from "@/views/Files.vue";
 import Share from "@/views/Share.vue";
@@ -19,6 +20,7 @@ import { login, validateLogin } from "@/utils/auth";
 
 const titles = {
   Login: "sidebar.login",
+  AutoLogin: "sidebar.login",
   Share: "buttons.share",
   Files: "files.files",
   Settings: "sidebar.settings",
@@ -37,6 +39,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/autoLogin",
+    name: "AutoLogin",
+    component: AutoLogin,
   },
   {
     path: "/share",

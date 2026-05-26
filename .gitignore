@@ -37,3 +37,7 @@ build/
 
 default.nix
 Dockerfile.dev
+
+.cache
+.pnpm-store
+release

@@ -359,7 +359,7 @@ main .spinner .bounce2 {
 
 /*** RTL - flip and position arrow of path ***/
 html[dir="rtl"] .breadcrumbs .chevron {
-  transform: scaleX(-1) translateX(16em);
+  transform: scaleX(-1);
 }
 
 #editor-container .breadcrumbs span {

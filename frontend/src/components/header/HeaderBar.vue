@@ -1,13 +1,6 @@
 <template>
   <header>
     <img v-if="showLogo" :src="logoURL" />
-    <Action
-      v-if="showMenu"
-      class="menu-button"
-      icon="menu"
-      :label="t('buttons.toggleSidebar')"
-      @action="layoutStore.showHover('sidebar')"
-    />
 
     <slot />
 

@@ -9,7 +9,7 @@
 }
 
 html[dir="rtl"] .dashboard .row {
-  margin-right: 16em;
+  margin-right: -0.5em;
 }
 
 .dashboard .row .column {
@@ -65,7 +65,7 @@ p code {
 }
 
 html[dir="rtl"] .dashboard #nav .wrapper {
-  margin-right: 16em;
+  margin-right: 0;
 }
 
 .dashboard #nav ul {

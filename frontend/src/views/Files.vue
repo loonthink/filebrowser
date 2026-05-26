@@ -2,7 +2,6 @@
   <div>
     <header-bar
       v-if="error || fileStore.req?.type === undefined"
-      showMenu
       showLogo
     />
 

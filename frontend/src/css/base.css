@@ -88,8 +88,8 @@ nav .action > * {
 
 main {
   min-height: 1em;
-  margin: 0 1em 1em auto;
-  width: calc(100% - 19em);
+  margin: 0 1em 1em;
+  width: calc(100% - 2em);
 }
 
 .breadcrumbs {
@@ -115,7 +115,7 @@ main {
 }
 
 html[dir="rtl"] .breadcrumbs a {
-  transform: translateX(-16em);
+  transform: none;
 }
 
 .breadcrumbs a:hover {

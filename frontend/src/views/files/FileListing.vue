@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-bar showMenu showLogo>
+    <header-bar>
       <search />
       <title />
       <action
@@ -12,12 +12,6 @@
 
       <template #actions>
         <template v-if="!isMobile">
-          <action
-            v-if="headerButtons.share"
-            icon="share"
-            :label="t('buttons.share')"
-            show="share"
-          />
           <action
             v-if="headerButtons.rename"
             icon="mode_edit"
@@ -52,6 +46,18 @@
           icon="code"
           :label="t('buttons.shell')"
           @action="layoutStore.toggleShell"
+        />
+        <action
+          v-if="headerButtons.create"
+          icon="create_new_folder"
+          :label="t('sidebar.newFolder')"
+          show="newDir"
+        />
+        <action
+          v-if="headerButtons.create"
+          icon="note_add"
+          :label="t('sidebar.newFile')"
+          show="newFile"
         />
         <action
           :icon="viewIcon"
@@ -476,6 +482,7 @@ const viewIcon = computed(() => {
 const headerButtons = computed(() => {
   return {
     upload: authStore.user?.perm.create,
+    create: authStore.user?.perm.create,
     download: authStore.user?.perm.download,
     shell: authStore.user?.perm.execute && enableExec,
     delete: fileStore.selectedCount > 0 && authStore.user?.perm.delete,

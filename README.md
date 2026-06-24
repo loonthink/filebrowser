@@ -29,4 +29,4 @@ Contributions are always welcome. To start contributing to this project, read ou
 
 ## License
 
-[Apache License 2.0](LICENSE) © File Browser Contributors
+[Apache License 2.0](LICENSE) © File Browser Contributorseditor-containereditor-containereditor-containereditor-container

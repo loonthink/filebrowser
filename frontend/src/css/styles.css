@@ -110,7 +110,8 @@ main .spinner .bounce2 {
 }
 
 .action:hover {
-  background-color: var(--hover);
+  /*background-color: var(--hover);*/
+  transform: scale(1.2);
 }
 
 .action ul {
@@ -348,6 +349,11 @@ main .spinner .bounce2 {
 
 #editor-container #editor {
   flex: 1;
+}
+
+#editor-container #editor.editor-surface,
+#editor-container #preview-container.editor-surface {
+  flex: 0 0 auto;
 }
 
 #editor-container .breadcrumbs {

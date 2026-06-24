@@ -1,7 +1,7 @@
 body {
   font-family: "Roboto", sans-serif;
-  padding-top: 4em;
-  background: var(--background);
+  padding-top: 0em;
+  /*background: var(--background);*/
   color: var(--textSecondary);
 }
 
@@ -94,11 +94,11 @@ main {
 
 .breadcrumbs {
   height: 3em;
-  background: var(--background);
-  border-bottom: 1px solid var(--divider);
-  position: sticky;
+  /*background: var(--background);*/
+  /*border-bottom: 1px solid var(--divider);*/
+  /*position: sticky;
   z-index: 1000;
-  top: 4em;
+  top: 4em;*/
 }
 
 .breadcrumbs span,

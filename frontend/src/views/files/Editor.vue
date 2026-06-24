@@ -41,38 +41,44 @@
       </div>
     </div>
     <template v-else>
-      <div class="editor-header">
-        <Breadcrumbs base="/files" noLink />
+      <div class="editor-shell">
+        <div class="editor-header">
+          <Breadcrumbs base="/files" noLink />
 
-        <div>
-          <button
-            :disabled="isSelectionEmpty"
-            @click="executeEditorCommand('copy')"
-          >
-            <span><i class="material-icons">content_copy</i></span>
-          </button>
-          <button
-            :disabled="isSelectionEmpty"
-            @click="executeEditorCommand('cut')"
-          >
-            <span><i class="material-icons">content_cut</i></span>
-          </button>
-          <button @click="executeEditorCommand('paste')">
-            <span><i class="material-icons">content_paste</i></span>
-          </button>
-          <button @click="executeEditorCommand('openCommandPalette')">
-            <span><i class="material-icons">more_vert</i></span>
-          </button>
+          <div>
+            <button
+              :disabled="isSelectionEmpty"
+              @click="executeEditorCommand('copy')"
+            >
+              <span><i class="material-icons">content_copy</i></span>
+            </button>
+            <button
+              :disabled="isSelectionEmpty"
+              @click="executeEditorCommand('cut')"
+            >
+              <span><i class="material-icons">content_cut</i></span>
+            </button>
+            <button @click="executeEditorCommand('paste')">
+              <span><i class="material-icons">content_paste</i></span>
+            </button>
+            <button @click="executeEditorCommand('openCommandPalette')">
+              <span><i class="material-icons">more_vert</i></span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div
-        v-show="isPreview && isMarkdownFile"
-        id="preview-container"
-        class="md_preview"
-        v-html="previewContent"
-      ></div>
-      <form v-show="!isPreview || !isMarkdownFile" id="editor"></form>
+        <div
+          v-show="isPreview && isMarkdownFile"
+          id="preview-container"
+          class="md_preview editor-surface"
+          v-html="previewContent"
+        ></div>
+        <form
+          v-show="!isPreview || !isMarkdownFile"
+          id="editor"
+          class="editor-surface"
+        ></form>
+      </div>
     </template>
   </div>
 </template>
@@ -327,6 +333,11 @@ const preview = () => {
 </script>
 
 <style scoped>
+.editor-shell {
+  width: calc(100vw - 200px);
+  margin: 0 auto;
+}
+
 .editor-font-size {
   margin: 0 0.5em;
   color: var(--fg);
@@ -336,6 +347,12 @@ const preview = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.editor-surface {
+  width: calc(100vw - 200px);
+  height: calc(100vh - 60px);
+  margin: 0 auto;
 }
 
 .editor-header > div > button {

@@ -80,4 +80,16 @@ const element = computed(() => {
 });
 </script>
 
-<style></style>
+<style scoped>
+.breadcrumbs {
+  color: rgb(111, 111, 111);
+}
+
+.breadcrumbs a {
+  color: inherit;
+}
+
+.breadcrumbs a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>

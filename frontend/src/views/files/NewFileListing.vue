@@ -189,7 +189,7 @@
         :class="authStore.user?.viewMode ?? ''"
         @click="handleEmptyAreaClick"
       >
-        <div class="item header">
+        <div class="item header new-listing-header">
           <div>
             <p
               class="header-item check-file"
@@ -1248,6 +1248,21 @@ const handleEmptyAreaClick = (e: MouseEvent) => {
   height: 12px;
   margin-left: 0.25rem;
   vertical-align: middle;
+}
+
+:global(#listing.list) .new-listing-header {
+  background: rgb(242, 244, 245);
+  border-color: rgba(0, 0, 0, 0.05);
+  color: rgb(0, 0, 0);
+}
+
+:global(#listing.list) .new-listing-header .header-item {
+  color: rgb(0, 0, 0);
+  font-weight: normal;
+}
+
+:global(#listing.list) .new-listing-header .header-item:hover {
+  background: transparent;
 }
 
 .empty-state-icon {

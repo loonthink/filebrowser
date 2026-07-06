@@ -22,7 +22,7 @@ html[dir="rtl"] #listing {
 
 #listing > #listing-wrap {
   height: 500px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 180px);
   overflow-y: auto;
 }
 
@@ -177,6 +177,7 @@ html[dir="rtl"] #listing {
   display: none;
 }
 
+#listing .item:hover,
 #listing .item[aria-selected="true"] {
   background: rgba(8, 134, 255, 0.05) !important;
   color: #2e2e30 !important;

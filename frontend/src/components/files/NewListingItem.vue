@@ -1,6 +1,6 @@
 <template>
   <div
-    class="item"
+    class="item new-listing-item"
     role="button"
     tabindex="0"
     :draggable="false"
@@ -591,6 +591,20 @@ const handleTouchMove = (event: TouchEvent) => {
   object-fit: contain;
   margin-right: 0.1em;
   vertical-align: bottom;
+}
+
+:global(#listing) .new-listing-item {
+  background: rgb(255, 255, 255);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgb(111, 111, 111);
+}
+
+:global(#listing) .new-listing-item .name {
+  color: rgb(46, 46, 48);
+}
+
+:global(#listing) .new-listing-item[aria-selected="true"] {
+  color: rgb(46, 46, 48) !important;
 }
 
 .actions {

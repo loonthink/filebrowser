@@ -33,7 +33,7 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps<{
+defineProps<{
   loading: boolean;
   modelValue: string;
   resultCount: number;
@@ -77,9 +77,9 @@ defineExpose({
   gap: 0.4rem;
   height: 32px;
   padding: 0 0.65rem;
-  border: 1px solid var(--borderPrimary);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.4rem;
-  background: var(--surfacePrimary);
+  background: rgb(255, 255, 255);
 }
 
 .inline-search__input input {
@@ -88,14 +88,14 @@ defineExpose({
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--textSecondary);
+  color: rgb(51, 51, 51);
 }
 
 .inline-search__icon,
 .inline-search__status,
 .inline-search__clear i,
 .inline-search__count {
-  color: var(--textPrimary);
+  color: rgb(111, 111, 111);
   font-size: 1rem;
 }
 

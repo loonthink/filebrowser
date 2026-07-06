@@ -47,6 +47,33 @@
       <p class="modified">
         <time :datetime="modified">{{ humanTime() }}</time>
       </p>
+
+      <p
+        class="header-item actions"
+        @click.stop
+        @mousedown.stop
+        @mouseup.stop
+        @touchstart.stop
+        @touchend.stop
+        @touchmove.stop
+      >
+        <button
+          v-for="action in rowActions"
+          :key="action"
+          type="button"
+          class="row-action"
+          :title="actionLabel(action)"
+          :aria-label="actionLabel(action)"
+          @click.stop.prevent="handleRowAction(action)"
+        >
+          <img
+            class="row-action-icon"
+            :src="actionIcons[action]"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+      </p>
     </div>
   </div>
 </template>
@@ -63,8 +90,16 @@ import { files as api } from "@/api";
 import * as upload from "@/utils/upload";
 import { computed, inject, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import dirIcon from "./assets/dir.svg";
 import fileIcon from "./assets/file.svg";
+import copyIcon from "./assets/copy.svg";
+import deleteIcon from "./assets/delete.svg";
+import downloadIcon from "./assets/download.svg";
+import moveIcon from "./assets/move.svg";
+import renameIcon from "./assets/rename.svg";
+
+type RowAction = "copy" | "delete" | "download" | "move" | "rename";
 
 const touches = ref<number>(0);
 
@@ -76,6 +111,7 @@ const moveThreshold = ref<number>(10);
 
 const $showError = inject<IToastError>("$showError")!;
 const router = useRouter();
+const { t } = useI18n();
 
 const props = defineProps<{
   name: string;
@@ -93,14 +129,19 @@ const authStore = useAuthStore();
 const fileStore = useFileStore();
 const layoutStore = useLayoutStore();
 
+const actionIcons = {
+  copy: copyIcon,
+  move: moveIcon,
+  rename: renameIcon,
+  download: downloadIcon,
+  delete: deleteIcon,
+} as const;
+
 const singleClick = computed(
   () => !props.readOnly && authStore.user?.singleClick
 );
 const isSelected = computed(
   () => fileStore.selected.indexOf(props.index) !== -1
-);
-const isDraggable = computed(
-  () => !props.readOnly && authStore.user?.perm.rename
 );
 
 const canDrop = computed(() => {
@@ -137,6 +178,70 @@ const iconStyle = computed(() => {
     ? { width: "20px", height: "20px" }
     : { width: "16px", height: "auto" };
 });
+
+const rowActions = computed<RowAction[]>(() => {
+  if (props.readOnly) return [];
+
+  const permissions = authStore.user?.perm;
+  if (!permissions) return [];
+
+  const actions: RowAction[] = [];
+
+  if (permissions.create) actions.push("copy");
+  if (permissions.rename) {
+    actions.push("move", "rename");
+  }
+  if (permissions.download) actions.push("download");
+  if (permissions.delete) actions.push("delete");
+
+  return actions;
+});
+
+const actionLabel = (action: RowAction) => {
+  const labels: Record<RowAction, string> = {
+    copy: t("buttons.copyFile"),
+    delete: t("buttons.delete"),
+    download: t("buttons.download"),
+    move: t("buttons.moveFile"),
+    rename: t("buttons.rename"),
+  };
+
+  return labels[action];
+};
+
+const selectCurrentItem = () => {
+  fileStore.selected = [props.index];
+};
+
+const handleRowAction = (action: RowAction) => {
+  selectCurrentItem();
+
+  if (action === "download") {
+    downloadCurrentItem();
+    return;
+  }
+
+  layoutStore.showHover(action);
+};
+
+const downloadCurrentItem = () => {
+  if (fileStore.req === null) return;
+
+  const item = fileStore.req.items[props.index];
+
+  if (!item.isDir) {
+    api.download(null, item.url);
+    return;
+  }
+
+  layoutStore.showHover({
+    prompt: "download",
+    confirm: (format: any) => {
+      layoutStore.closeHovers();
+      api.download(format, item.url);
+    },
+  });
+};
 
 const humanSize = () => {
   return props.type == "invalid_link" ? "invalid link" : filesize(props.size);
@@ -441,5 +546,30 @@ const handleTouchMove = (event: TouchEvent) => {
   object-fit: contain;
   margin-right: 0.1em;
   vertical-align: bottom;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.row-action-icon {
+  width: 20px !important;
+  height: 20px !important;
+  margin: 0 !important;
+  object-fit: contain;
 }
 </style>

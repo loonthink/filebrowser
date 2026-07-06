@@ -156,7 +156,12 @@
         "
       >
         <h2 class="message">
-          <img class="empty-state-icon" :src="noResultIcon" alt="" aria-hidden="true" />
+          <img
+            class="empty-state-icon"
+            :src="noResultIcon"
+            alt=""
+            aria-hidden="true"
+          />
           <span>{{ t("files.lonely") }}</span>
         </h2>
         <input
@@ -237,6 +242,9 @@
                 alt=""
                 aria-hidden="true"
               />
+            </p>
+            <p class="header-item actions">
+              <span>Actions</span>
             </p>
           </div>
         </div>

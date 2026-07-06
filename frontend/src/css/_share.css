@@ -76,6 +76,10 @@
   width: 25%;
 }
 
+#listing.list .item .actions {
+  width: 25%;
+}
+
 .share__wrong__password {
   background: var(--red);
   color: #fff;

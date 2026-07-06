@@ -8,7 +8,6 @@
     @dragover="dragOver"
     @drop="drop"
     @click="itemClick"
-    @dblclick="itemDbClick"
     @mousedown="handleMouseDown"
     @mouseup="handleMouseUp"
     @mouseleave="handleMouseLeave"
@@ -401,13 +400,8 @@ const drop = async (event: Event) => {
   action(false, false);
 };
 
-const itemDbClick = () => {
-  open();
-};
-
 const itemClick = (event: Event | KeyboardEvent) => {
   // If long press was triggered, prevent normal click behavior
-  return;
   if (longPressTriggered.value) {
     longPressTriggered.value = false;
     return;
@@ -450,46 +444,10 @@ const click = (event: Event | KeyboardEvent) => {
   }
 
   if (fileStore.selected.indexOf(props.index) !== -1) {
-    if (
-      (event as KeyboardEvent).ctrlKey ||
-      (event as KeyboardEvent).metaKey ||
-      fileStore.multiple
-    ) {
-      fileStore.removeSelected(props.index);
-    } else {
-      fileStore.selected = [props.index];
-    }
+    fileStore.removeSelected(props.index);
     return;
   }
 
-  if ((event as KeyboardEvent).shiftKey && fileStore.selected.length > 0) {
-    let fi = 0;
-    let la = 0;
-
-    if (props.index > fileStore.selected[0]) {
-      fi = fileStore.selected[0] + 1;
-      la = props.index;
-    } else {
-      fi = props.index;
-      la = fileStore.selected[0] - 1;
-    }
-
-    for (; fi <= la; fi++) {
-      if (fileStore.selected.indexOf(fi) == -1) {
-        fileStore.selected.push(fi);
-      }
-    }
-
-    return;
-  }
-
-  if (
-    !(event as KeyboardEvent).ctrlKey &&
-    !(event as KeyboardEvent).metaKey &&
-    !fileStore.multiple
-  ) {
-    fileStore.selected = [];
-  }
   fileStore.selected.push(props.index);
 };
 

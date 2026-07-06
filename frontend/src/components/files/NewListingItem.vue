@@ -8,6 +8,7 @@
     @dragover="dragOver"
     @drop="drop"
     @click="itemClick"
+    @dblclick="itemDbClick"
     @mousedown="handleMouseDown"
     @mouseup="handleMouseUp"
     @mouseleave="handleMouseLeave"
@@ -22,7 +23,29 @@
     :data-ext="getExtension(name).toLowerCase()"
     @contextmenu="contextMenu"
   >
-    <div>
+    <p
+      class="check-file"
+      role="button"
+      tabindex="0"
+      :title="checkboxLabel"
+      :aria-label="checkboxLabel"
+      @click.stop.prevent="toggleSelection"
+      @mousedown.stop
+      @mouseup.stop
+      @touchstart.stop
+      @touchend.stop
+      @keydown.enter.prevent.stop="toggleSelection"
+      @keydown.space.prevent.stop="toggleSelection"
+    >
+      <img
+        class="checkbox-icon"
+        :src="checkboxIcon"
+        alt=""
+        aria-hidden="true"
+      />
+    </p>
+
+    <p class="name">
       <img
         v-if="!readOnly && type === 'image' && isThumbsEnabled"
         class="thumbnail"
@@ -36,45 +59,42 @@
         :alt="isDir ? 'directory' : 'file'"
         :style="iconStyle"
       />
-    </div>
+      {{ name }}
+    </p>
 
-    <div>
-      <p class="name">{{ name }}</p>
+    <p v-if="isDir" class="size" data-order="-1">&mdash;</p>
+    <p v-else class="size" :data-order="humanSize()">{{ humanSize() }}</p>
 
-      <p v-if="isDir" class="size" data-order="-1">&mdash;</p>
-      <p v-else class="size" :data-order="humanSize()">{{ humanSize() }}</p>
+    <p class="modified">
+      <time :datetime="modified">{{ humanTime() }}</time>
+    </p>
 
-      <p class="modified">
-        <time :datetime="modified">{{ humanTime() }}</time>
-      </p>
-
-      <p
-        class="header-item actions"
-        @click.stop
-        @mousedown.stop
-        @mouseup.stop
-        @touchstart.stop
-        @touchend.stop
-        @touchmove.stop
+    <p
+      class="header-item actions"
+      @click.stop
+      @mousedown.stop
+      @mouseup.stop
+      @touchstart.stop
+      @touchend.stop
+      @touchmove.stop
+    >
+      <button
+        v-for="action in rowActions"
+        :key="action"
+        type="button"
+        class="row-action"
+        :title="actionLabel(action)"
+        :aria-label="actionLabel(action)"
+        @click.stop.prevent="handleRowAction(action)"
       >
-        <button
-          v-for="action in rowActions"
-          :key="action"
-          type="button"
-          class="row-action"
-          :title="actionLabel(action)"
-          :aria-label="actionLabel(action)"
-          @click.stop.prevent="handleRowAction(action)"
-        >
-          <img
-            class="row-action-icon"
-            :src="actionIcons[action]"
-            alt=""
-            aria-hidden="true"
-          />
-        </button>
-      </p>
-    </div>
+        <img
+          class="row-action-icon"
+          :src="actionIcons[action]"
+          alt=""
+          aria-hidden="true"
+        />
+      </button>
+    </p>
   </div>
 </template>
 
@@ -98,6 +118,8 @@ import deleteIcon from "./assets/delete.svg";
 import downloadIcon from "./assets/download.svg";
 import moveIcon from "./assets/move.svg";
 import renameIcon from "./assets/rename.svg";
+import notCheck from "./assets/not-check.svg";
+import checked from "./assets/checked.svg";
 
 type RowAction = "copy" | "delete" | "download" | "move" | "rename";
 
@@ -143,6 +165,23 @@ const singleClick = computed(
 const isSelected = computed(
   () => fileStore.selected.indexOf(props.index) !== -1
 );
+
+const checkboxIcon = computed(() => {
+  return isSelected.value ? checked : notCheck;
+});
+
+const checkboxLabel = computed(() => {
+  return isSelected.value ? t("buttons.clear") : t("buttons.selectMultiple");
+});
+
+const toggleSelection = () => {
+  if (isSelected.value) {
+    fileStore.removeSelected(props.index);
+    return;
+  }
+
+  fileStore.selected.push(props.index);
+};
 
 const canDrop = computed(() => {
   if (!props.isDir || props.readOnly) return false;
@@ -362,8 +401,13 @@ const drop = async (event: Event) => {
   action(false, false);
 };
 
+const itemDbClick = () => {
+  open();
+};
+
 const itemClick = (event: Event | KeyboardEvent) => {
   // If long press was triggered, prevent normal click behavior
+  return;
   if (longPressTriggered.value) {
     longPressTriggered.value = false;
     return;
@@ -381,6 +425,7 @@ const itemClick = (event: Event | KeyboardEvent) => {
 };
 
 const contextMenu = (event: MouseEvent) => {
+  return;
   event.preventDefault();
   if (
     fileStore.selected.length === 0 ||

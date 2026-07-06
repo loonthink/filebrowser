@@ -80,6 +80,17 @@
   width: 25%;
 }
 
+#listing.list .item .check-file {
+  width: 20px;
+  height: 20px;
+  margin-right: 11px;
+}
+
+#listing.list .item .check-file .checkbox-icon {
+  width: 14px;
+  height: 14px;
+}
+
 .share__wrong__password {
   background: var(--red);
   color: #fff;

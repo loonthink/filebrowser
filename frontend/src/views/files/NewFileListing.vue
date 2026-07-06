@@ -192,6 +192,23 @@
         <div class="item header">
           <div>
             <p
+              class="header-item check-file"
+              role="button"
+              tabindex="0"
+              :title="headerCheckboxLabel"
+              :aria-label="headerCheckboxLabel"
+              @click.stop="toggleHeaderSelection"
+              @keydown.enter.prevent.stop="toggleHeaderSelection"
+              @keydown.space.prevent.stop="toggleHeaderSelection"
+            >
+              <img
+                class="checkbox-icon"
+                :src="headerCheckboxIcon"
+                alt=""
+                aria-hidden="true"
+              />
+            </p>
+            <p
               :class="{ active: nameSorted }"
               class="header-item name"
               role="button"
@@ -418,6 +435,9 @@ import ascIcon from "./assets/asc.svg";
 import descIcon from "./assets/desc.svg";
 import noOrderIcon from "./assets/no-order.svg";
 import noResultIcon from "./assets/no-result.svg";
+import notCheck from "@/components/files/assets/not-check.svg";
+import checked from "@/components/files/assets/checked.svg";
+import checkNotAll from "@/components/files/assets/checked-not-all.svg";
 
 const showLimit = ref<number>(50);
 const columnWidth = ref<number>(280);
@@ -478,13 +498,10 @@ const items = computed(() => {
   const files: any[] = [];
 
   fileStore.req?.items.forEach((item) => {
-    console.log("item", item);
-    if (item.isDir && !item.name.startsWith(".")) {
+    if (item.isDir) {
       dirs.push(item);
     } else {
-      if (!item.name.startsWith(".")) {
-        files.push(item);
-      }
+      files.push(item);
     }
   });
 
@@ -498,6 +515,52 @@ const files = computed((): Resource[] => {
 
   return items.value.files.slice(0, _showLimit);
 });
+
+const selectableItems = computed(() => [
+  ...items.value.dirs,
+  ...items.value.files,
+]);
+
+const selectedSelectableCount = computed(() => {
+  return selectableItems.value.filter(
+    (item) => fileStore.selected.indexOf(item.index) !== -1
+  ).length;
+});
+
+const isAllSelected = computed(() => {
+  return (
+    selectableItems.value.length > 0 &&
+    selectedSelectableCount.value === selectableItems.value.length
+  );
+});
+
+const headerCheckboxIcon = computed(() => {
+  if (isAllSelected.value) return checked;
+  if (selectedSelectableCount.value > 0) return checkNotAll;
+  return notCheck;
+});
+
+const headerCheckboxLabel = computed(() => {
+  return isAllSelected.value ? t("buttons.clear") : t("buttons.selectMultiple");
+});
+
+const toggleHeaderSelection = () => {
+  if (selectableItems.value.length === 0) return;
+
+  if (isAllSelected.value) {
+    const selectableIndexes = selectableItems.value.map((item) => item.index);
+    fileStore.selected = fileStore.selected.filter(
+      (index) => selectableIndexes.indexOf(index) === -1
+    );
+    return;
+  }
+
+  for (const item of selectableItems.value) {
+    if (fileStore.selected.indexOf(item.index) === -1) {
+      fileStore.selected.push(item.index);
+    }
+  }
+};
 
 const getSortIcon = (column: string) => {
   if (fileStore.req?.sorting.by !== column) {

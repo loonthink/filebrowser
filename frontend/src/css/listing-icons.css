@@ -2,9 +2,9 @@
 
 /* General */
 
-.file-icons [aria-label^="."] {
+/*.file-icons [aria-label^="."] {
   opacity: 0.33;
-}
+}*/
 .file-icons [data-ext=".bak"] {
   opacity: 0.33;
 }

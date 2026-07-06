@@ -306,4 +306,5 @@ html[dir="rtl"] #listing {
   border: none;
   border-bottom: 1px solid #f3f3f3;
   background: #ffffff;
+  font-size: 14px;
 }
